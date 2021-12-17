@@ -63,7 +63,7 @@ function preload () {
 function setup () {
   createCanvas(displayWidth, displayHeight-displayHeight*0.16);
 
-  boxWidth = 30;
+  boxWidth = 200;
   boxHeight = displayHeight*0.046;
   boxHeight2 = displayHeight*0.068;
   txtWidth = displayWidth*0.1099;
