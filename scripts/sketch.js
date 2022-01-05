@@ -20,6 +20,9 @@ var rEn;
 var rBu;
 
 var boxPosY = [];
+var boxPosYSt;
+var seqPos = 0;
+var seqCount = 0;
 
 var ans1;
 var ans3a;
@@ -52,6 +55,7 @@ var lSpacing;
 var boxWidth;
 var boxHeight;
 var boxHeight2;
+var height1 = true; //switch between two heights
 var txtWidth;
 
 var popSound;
@@ -73,7 +77,8 @@ function setup () {
   ansX = width/2-120;
   ansTX = ansX + 35;
 
-  boxPosY[0] = 50;
+  boxPosYSt = height-175;
+  boxPosY[0] = boxPosYSt;
   spacing = 21.6;
   spacing2 = boxHeight2 + 6.5;
   lSpacing = 27;
@@ -123,14 +128,11 @@ function keyPressed () {
 function draw () {
   background(255);
 
-  // console.log(prNo)
-
   //initial greeting
 
   fill(214);
   noStroke();
   rect(repX, boxPosY[0], boxWidth, boxHeight, 10);
-  boxPosY[1] = boxPosY[0] + boxHeight + spacing;
   fill(0);
   textSize(17);
   textAlign(LEFT, CENTER);
@@ -142,7 +144,6 @@ function draw () {
     fill(20, 100, 200);
     noStroke();
     rect(ansX, boxPosY[1], boxWidth, boxHeight, 10);
-    boxPosY[2] = boxPosY[1] + boxHeight + spacing;
     fill(255);
     textSize(16);
     textAlign(LEFT);
@@ -159,11 +160,11 @@ function draw () {
       let enq = "Mish " + enmyn[rEn] + ". Cre'n ennym t'ort?";
       if (textWidth(enq) + 5 < txtWidth) {
         rect(repX, boxPosY[2], boxWidth, boxHeight, 10);
-        boxPosY[3] = boxPosY[2] + boxHeight + spacing;
+        height1 = true;
       }
       else {
         rect(repX, boxPosY[2], boxWidth, boxHeight2, 10);
-        boxPosY[3] = boxPosY[2] + boxHeight2 + spacing;
+        height1 = false;
       }
       fill(0);
       textSize(16);
@@ -175,10 +176,10 @@ function draw () {
   //second reply
 
   if (prNo > 1) {
+    height1 = true;
     fill(20, 100, 200);
     noStroke();
     rect(ansX, boxPosY[3], 281, 49, 10);
-    boxPosY[4] = boxPosY[3] + boxHeight + spacing;
     fill(255);
     textSize(16);
     textAlign(LEFT);
@@ -193,7 +194,6 @@ function draw () {
       fill(214);
       noStroke();
       rect(repX, boxPosY[4], boxWidth, boxHeight2, 10);
-      boxPosY[5] = boxPosY[4] + boxHeight2 + spacing;
       fill(0);
       textSize(16);
       textAlign(LEFT);
@@ -207,7 +207,6 @@ function draw () {
     fill(20, 100, 200);
     noStroke();
     rect(ansX, boxPosY[5], boxWidth, boxHeight2, 10);
-    boxPosY[6] = boxPosY[5] + boxHeight2 + spacing;
     fill(255);
     textSize(16);
     textAlign(LEFT);
@@ -222,7 +221,6 @@ function draw () {
     fill(214);
     noStroke();
     rect(repX, boxPosY[6], boxWidth, boxHeight2, 10);
-    boxPosY[7] = boxPosY[6] + boxHeight2 + spacing;
     fill(0);
     textSize(16);
     textAlign(LEFT);
@@ -237,11 +235,11 @@ function draw () {
     noStroke();
     if (textWidth(replies[3]) < txtWidth) {
       rect(ansX, boxPosY[7], boxWidth, boxHeight, 10);
-      boxPosY[8] = boxPosY[7] + boxHeight + spacing;
+      height1 = true;
     }
     else {
       rect(ansX, boxPosY[7], boxWidth, boxHeight2, 10);
-      boxPosY[8] = boxPosY[7] + boxHeight2 + spacing;
+      height1 = false;
     }
     fill(255);
     textSize(16);
@@ -265,7 +263,7 @@ function draw () {
     }
   }
 
-  //input/prompt bar backgroun
+  //input/prompt bar background
 
   fill(255);
   rect(0, height-110, width, 110);
@@ -305,6 +303,7 @@ function draw () {
 }
 
 function messaged () {
+      boxPos();
   if (mNo == 0) firstMessage();
   if (mNo == 1) secondMessage();
   if (mNo == 2) thirdMessage();
@@ -404,6 +403,15 @@ function fourthMessage () {
 function playPop () {
   popSound.play();
   played = true;
+  boxPos();
+}
+
+function boxPos () {
+  for (let i = 0; i < boxPosY.length; i++) {
+    if (height1) boxPosY[i] = boxPosY[i] - boxHeight - spacing;
+    else boxPosY[i] = boxPosY[i] - boxHeight2 - spacing;
+  }
+  boxPosY.push(boxPosYSt);
 }
 
 function gameEnd () {
