@@ -35,9 +35,10 @@ var seqCount = 0;
 
 var ans1;
 var ans3a;
-var ans3b = new RegExp ("kys t'ou hene", "i");
-var ans4a = new RegExp ("ta mee ass", "i");
-var ans4b = new RegExp ("cre ass t'ou", "i");
+var ans3b = /kys t/i
+var ans3c = /ou hene/i;
+var ans4a = /ta mee ass/i;
+var ans4b = /cre ass t'ou/i;
 
 var r1T = 0;
 var r1Tt = 150;
@@ -110,9 +111,9 @@ function setup () {
   profPicSpY = 7.5;
 
   let ranProm = Math.floor(random(0, 3));
-  if (ranProm == 0) ans3a = new RegExp ("ta mee mie dy liooar", "i");
-  else if (ranProm == 1) ans3a = new RegExp ("cha noddym gaccan", "i");
-  else ans3a = new RegExp ("ta mee feer vie", "i");
+  if (ranProm == 0) ans3a = /ta mee mie dy liooar/i;
+  else if (ranProm == 1) ans3a = /cha noddym gaccan/i;
+  else ans3a = /ta mee feer vie/i;
 
   ranTraa = Math.floor(random(0,3));
   if (ranTraa == 0) ans1 = new RegExp ("moghrey mie", "i");
@@ -122,7 +123,7 @@ function setup () {
   prompt = ["Say '" + traa[ranTraa] + "' back in Manx.", "Say who you are in Manx.", "Say, '" + stayd[ranProm] + " How are you yourself?' in Manx.", "Say where you're from, and ask where they're from."];
 
   inp1  = createInput();
-  inp1.size(360, 37.8);
+  inp1.size(340, 37.8);
   inp1.position(width/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
   inp1.style("border-radius", "10px");
@@ -159,6 +160,7 @@ function draw () {
 
   fill(botBkgr);
   noStroke();
+  rectMode(CORNER);
   rect(repX, boxPosY[0], boxWidth, boxHeight, 10);
 
   image(profile[rEn], repX - profPicSpX, boxPosY[0] + profPicSpY);
@@ -333,7 +335,8 @@ function draw () {
   if (!correct && !error && !replying) {
     fill(0);
     textAlign(CENTER);
-    text(prompt[prNo], width/2, height-17.5);
+    rectMode(CENTER);
+    text(prompt[prNo], width/2, height-30, 300);
   }
 
   if (replying) typing();
@@ -411,7 +414,7 @@ function secondMessage () {
 }
 
 function thirdMessage () {
-  if (ans3a.test(inp1.value()) && ans3b.test(inp1.value())) {
+  if (ans3a.test(inp1.value()) && ans3b.test(inp1.value()) && ans3c.test(inp1.value())) {
     correct = true;
     replies.push(inp1.value());
     prNo++;
