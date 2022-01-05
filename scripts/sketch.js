@@ -77,7 +77,7 @@ function setup () {
   ansX = width/2-120;
   ansTX = ansX + 35;
 
-  boxPosYSt = height-175;
+  boxPosYSt = height-200;
   boxPosY[0] = boxPosYSt;
   spacing = 21.6;
   spacing2 = boxHeight2 + 6.5;
@@ -191,6 +191,7 @@ function draw () {
     else {
       replying = false;
       if (!played && prNo == 2) playPop();
+      height1 = false;
       fill(214);
       noStroke();
       rect(repX, boxPosY[4], boxWidth, boxHeight2, 10);
@@ -303,7 +304,6 @@ function draw () {
 }
 
 function messaged () {
-      boxPos();
   if (mNo == 0) firstMessage();
   if (mNo == 1) secondMessage();
   if (mNo == 2) thirdMessage();
@@ -317,6 +317,7 @@ function firstMessage () {
     prNo++;
     inp1.value("");
     rEn = Math.floor(random(0, 10));
+    boxPos();
   }
   else {
     error = true;
@@ -367,6 +368,7 @@ function secondMessage () {
     prNo++;
     played = false;
     inp1.value("");
+    boxPos();
   }
   else {
     error = true;
@@ -380,6 +382,7 @@ function thirdMessage () {
     prNo++;
     played = false;
     inp1.value("");
+    boxPos();
   }
   else {
     error = true;
@@ -394,6 +397,7 @@ function fourthMessage () {
     played = false;
     inp1.value("");
     rBu = Math.floor(random(0, 7));
+    boxPos();
   }
   else {
     error = true;
