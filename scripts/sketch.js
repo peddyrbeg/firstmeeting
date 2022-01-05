@@ -68,9 +68,9 @@ function setup () {
   boxHeight = 50;
   boxHeight2 = 73;
   txtWidth = 211;
-  repX = width/2 - 225;
+  repX = width/2 - 215;
   repTX = repX + 35;
-  ansX = width/2-55;
+  ansX = width/2-65;
   ansTX = ansX + 35;
 
   boxPosY[0] = 50;
@@ -91,7 +91,7 @@ function setup () {
   prompt = ["Say '" + traa[ranTraa] + "' back in Manx.", "Say who you are in Manx.", "Say, '" + stayd[ranProm] + " How are you yourself?' in Manx.", "Say where you're from, and ask where they're from."];
 
   inp1  = createInput();
-  inp1.size(240, 37.8);
+  inp1.size(400, 37.8);
   inp1.position(width/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
 
