@@ -1,4 +1,6 @@
 var inp1;
+var retry;
+var next;
 var reply;
 var replies = [];
 var traa = ["Good morning!", "Good afternoon!", "Good day!"];
@@ -43,7 +45,6 @@ var repTX;
 var ansX;
 var ansTX;
 
-var startPos;
 var spacing;
 var spacing2;
 var lSpacing;
@@ -57,23 +58,22 @@ var popSound;
 var played = false;
 
 function preload () {
-  popSound = loadSound('assets/414383__bluesiren__plop-sound.wav');
+  popSound = loadSound('assets/414383__bluesiren__plop-sound.mp3');
 }
 
 function setup () {
-  createCanvas(displayWidth, displayHeight-displayHeight*0.16);
+  createCanvas(displayWidth, displayHeight-163);
 
   boxWidth = 280;
   boxHeight = 50;
   boxHeight2 = 73;
   txtWidth = 211;
-  repX = 735;
-  repTX = 768;
-  ansX = 867;
-  ansTX = 902;
+  repX = width/2 - 225;
+  repTX = repX + 35;
+  ansX = width/2-55;
+  ansTX = ansX + 35;
 
   boxPosY[0] = 50;
-  startPos = displayHeight * 0.046;
   spacing = 21.6;
   spacing2 = boxHeight2 + 6.5;
   lSpacing = 27;
@@ -92,8 +92,25 @@ function setup () {
 
   inp1  = createInput();
   inp1.size(480, 37.8);
-  inp1.position(width/2-inp1.width/2, height-height*0.093);
+  inp1.position(width/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
+
+  retry = createButton("RETRY");
+  retry.position(width/2-100, height-100);
+  retry.size(100, 50);
+  retry.style("background", "black");
+  retry.style("border", "transparent");
+  retry.style("color", "white");
+  retry.style("display", "none");
+  retry.mousePressed(gameRestart)
+
+  next = createButton("NEXT");
+  next.position(width/2, height-100);
+  next.size(100, 50);
+  next.style("background", "green");
+  next.style("border", "transparent");
+  next.style("color", "white");
+  next.style("display", "none");
 
   // reply = createButton(">");
   // reply.position(width/4*2.45, height-height*0.03);
@@ -111,6 +128,8 @@ function keyPressed () {
 
 function draw () {
   background(255);
+
+  // console.log(prNo)
 
   //initial greeting
 
@@ -145,7 +164,7 @@ function draw () {
     }
     else {
       replying = false;
-      if (!played) playPop();
+      if (!played && prNo == 1) playPop();
       fill(214);
       noStroke();
       let enq = "Mish " + enmyn[3] + ". Cre'n ennym   t'ort?";
@@ -181,7 +200,7 @@ function draw () {
     }
     else {
       replying = false;
-      if (!played) playPop();
+      if (!played && prNo == 2) playPop();
       fill(214);
       noStroke();
       rect(repX, boxPosY[4], boxWidth, boxHeight2, 10);
@@ -210,7 +229,7 @@ function draw () {
     }
     else {
     replying = false;
-    if (!played) playPop();
+    if (!played && prNo == 3) playPop();
     fill(214);
     noStroke();
     rect(repX, boxPosY[6], boxWidth, boxHeight2, 10);
@@ -245,13 +264,15 @@ function draw () {
     }
     else {
       replying = false;
-    fill(214);
-    noStroke();
-    rect(repX, boxPosY[8], boxWidth, boxHeight, 10);
-    fill(0);
-    textSize(16);
-    textAlign(LEFT);
-    text("Ta mee ass " + buill[rBu] + ".", repTX, boxPosY[8] + lSpacing);
+      if (!played && prNo == 4) playPop();
+      fill(214);
+      noStroke();
+      rect(repX, boxPosY[8], boxWidth, boxHeight, 10);
+      fill(0);
+      textSize(16);
+      textAlign(LEFT);
+      text("Ta mee ass " + buill[rBu] + ".", repTX, boxPosY[8] + lSpacing);
+      gameEnd();
     }
   }
 
@@ -319,6 +340,7 @@ function secondMessage () {
     let q = /q/i;
     let s = /s/i;
     let t = /t/i;
+    let th = /th/i;
 
     nynEnnym = inp1.value().replace(mish, "");
     nynEnnym = nynEnnym.replace(" ", "");
@@ -338,11 +360,13 @@ function secondMessage () {
     else if (nynEnnym.search(p) == 0) nynEnnym = nynEnnym.replace(p, "Ph");
     else if (nynEnnym.search(q) == 0) nynEnnym = nynEnnym.replace(q, "Wh");
     else if (nynEnnym.search(s) == 0) nynEnnym = nynEnnym.replace(s, "H");
-    else if (nynEnnym.search(t) == 0) nynEnnym = nynEnnym.replace(t, "H");
+    else if (nynEnnym.search(t) == 0 && nynEnnym.search(th) == -1) nynEnnym = nynEnnym.replace(t, "H");
+    else if (nynEnnym.search(th) == 0) nynEnnym = nynEnnym.replace(th, "H");
     else nynEnnym = nynEnnym.charAt(0).toUpperCase() + nynEnnym.slice(1);
     correct = true;
     replies.push(inp1.value());
     prNo++;
+    played = false;
     inp1.value("");
   }
   else {
@@ -355,6 +379,7 @@ function thirdMessage () {
     correct = true;
     replies.push(inp1.value());
     prNo++;
+    played = false;
     inp1.value("");
   }
   else {
@@ -367,6 +392,7 @@ function fourthMessage () {
     correct = true;
     replies.push(inp1.value());
     prNo++;
+    played = false;
     inp1.value("");
     rBu = Math.floor(random(0, 7));
   }
@@ -376,6 +402,16 @@ function fourthMessage () {
 }
 
 function playPop () {
-  played = true;
   popSound.play();
+  played = true;
+}
+
+function gameEnd () {
+  inp1.style("display", "none");
+  retry.style("display", "block");
+  next.style("display", "block");
+}
+
+function gameRestart () {
+  location.reload();
 }
