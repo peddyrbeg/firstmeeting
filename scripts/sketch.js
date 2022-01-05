@@ -125,6 +125,7 @@ function setup () {
   inp1.size(360, 37.8);
   inp1.position(width/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
+  inp1.style("border-radius", "10px");
 
   retry = createButton("RETRY");
   retry.position(width/2-100, height-100);
