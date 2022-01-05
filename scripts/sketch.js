@@ -38,11 +38,11 @@ var r4Tt = 140;
 
 var replying = false;
 
-var mNo = 0;
+var mNo = 0; //message count
 
-var repX;
+var repX; //reply x position
 var repTX;
-var ansX;
+var ansX; // answer x position
 var ansTX;
 
 var spacing;
@@ -68,9 +68,9 @@ function setup () {
   boxHeight = 50;
   boxHeight2 = 73;
   txtWidth = 211;
-  repX = width/2 - 215;
+  repX = width/2 - 160;
   repTX = repX + 35;
-  ansX = width/2-65;
+  ansX = width/2-120;
   ansTX = ansX + 35;
 
   boxPosY[0] = 50;
@@ -91,7 +91,7 @@ function setup () {
   prompt = ["Say '" + traa[ranTraa] + "' back in Manx.", "Say who you are in Manx.", "Say, '" + stayd[ranProm] + " How are you yourself?' in Manx.", "Say where you're from, and ask where they're from."];
 
   inp1  = createInput();
-  inp1.size(400, 37.8);
+  inp1.size(360, 37.8);
   inp1.position(width/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
 
@@ -112,12 +112,6 @@ function setup () {
   next.style("color", "white");
   next.style("display", "none");
 
-  // reply = createButton(">");
-  // reply.position(width/4*2.45, height-height*0.03);
-  // reply.style('background', 'transparent');
-  // reply.style('border', 'transparent');
-  // reply.style('font-size', '20px');
-  // reply.mousePressed(messaged);
 }
 
 function keyPressed () {
@@ -141,11 +135,6 @@ function draw () {
   textSize(17);
   textAlign(LEFT, CENTER);
   text(greet[ranTraa], repTX, boxPosY[0] + lSpacing, );
-
-  if (!correct && !error && !replying) {
-    textAlign(CENTER);
-    text(prompt[prNo], width/2, height-17.5);
-  }
 
   //first reply
 
@@ -276,12 +265,17 @@ function draw () {
     }
   }
 
+  //input/prompt bar backgroun
+
+  fill(255);
+  rect(0, height-110, width, 110);
+
   //correct message
 
   if (correct) {
     fill(0, 150, 0);
     textAlign(CENTER);
-    text("Well done!", width/2, height-10);
+    text("Well done!", width/2, height-17.5);
     correctCount++;
     if (correctCount == 50) {
       correct = false;
@@ -301,6 +295,12 @@ function draw () {
       error = false;
       errorCount = 0;
     }
+  }
+
+  if (!correct && !error && !replying) {
+    fill(0);
+    textAlign(CENTER);
+    text(prompt[prNo], width/2, height-17.5);
   }
 }
 
