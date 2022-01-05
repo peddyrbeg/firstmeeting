@@ -167,8 +167,8 @@ function draw () {
       if (!played && prNo == 1) playPop();
       fill(214);
       noStroke();
-      let enq = "Mish " + enmyn[3] + ". Cre'n ennym   t'ort?";
-      if (textWidth(enq) < txtWidth) {
+      let enq = "Mish " + enmyn[rEn] + ". Cre'n ennym t'ort?";
+      if (textWidth(enq) + 5 < txtWidth) {
         rect(repX, boxPosY[2], boxWidth, boxHeight, 10);
         boxPosY[3] = boxPosY[2] + boxHeight + spacing;
       }
