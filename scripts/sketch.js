@@ -1,3 +1,12 @@
+var profile = [];
+var botBkgr;
+var userBkgr;
+var dots = ["", ".", "..", "..."];
+var dotCount = 0;
+
+var profPicSpX;
+var profPicSpY;
+
 var inp1;
 var retry;
 var next;
@@ -13,7 +22,7 @@ var error;
 var correct;
 var correctCount = 0;
 var errorCount = 0;
-var enmyn = ["Aalish", "Juan", "Blay", "Erin", "Josef", "Freya", "Maayl", "Jamys", "Breeshey", "Catreeney"]
+var enmyn = ["Aalish", "Juan", "Blay", "Erin", "Josef", "Freya", "Maayl", "Jamys", "Breeshey", "Catreeney"];
 var nynEnnym;
 var buill = ["Rhumsaa", "Doolish", "Balley Chashtal", "Purt ny h-Inshey", "Laksaa", "Purt Çhiarn", "Purt le Moirrey"];
 var rEn;
@@ -62,26 +71,43 @@ var popSound;
 var played = false;
 
 function preload () {
+  profile[0] = loadImage('assets/aalish.png');
+  profile[2] = loadImage('assets/blay.png');
+  profile[8] = loadImage('assets/breeshey.png');
+  profile[3] = loadImage('assets/erin.png');
+  profile[5] = loadImage('assets/freya.png');
+  profile[7] = loadImage('assets/jamys.png');
+  profile[4] = loadImage('assets/josef.png');
+  profile[1] = loadImage('assets/juan.png');
+  profile[6] = loadImage('assets/maayl.png');
+  profile[9] = loadImage('assets/catreeney.png');
+
   popSound = loadSound('assets/414383__bluesiren__plop-sound.mp3');
 }
 
 function setup () {
   createCanvas(displayWidth, displayHeight-163);
 
-  boxWidth = 280;
+  rEn = Math.floor(random(0, 10));
+  botBkgr = color(230, 102, 13);
+  userBkgr = color(25, 153, 242);
+
+  boxWidth = 250;
   boxHeight = 50;
   boxHeight2 = 73;
   txtWidth = 211;
-  repX = width/2 - 160;
-  repTX = repX + 35;
-  ansX = width/2-120;
-  ansTX = ansX + 35;
+  repX = width/2 - 120;
+  repTX = repX + 20;
+  ansX = width/2-80;
+  ansTX = ansX + 25;
 
   boxPosYSt = height-200;
   boxPosY[0] = boxPosYSt;
   spacing = 21.6;
   spacing2 = boxHeight2 + 6.5;
   lSpacing = 27;
+  profPicSpX = 50;
+  profPicSpY = 7.5;
 
   let ranProm = Math.floor(random(0, 3));
   if (ranProm == 0) ans3a = new RegExp ("ta mee mie dy liooar", "i");
@@ -130,10 +156,13 @@ function draw () {
 
   //initial greeting
 
-  fill(214);
+  fill(botBkgr);
   noStroke();
   rect(repX, boxPosY[0], boxWidth, boxHeight, 10);
-  fill(0);
+
+  image(profile[rEn], repX - profPicSpX, boxPosY[0] + profPicSpY);
+
+  fill(255);
   textSize(17);
   textAlign(LEFT, CENTER);
   text(greet[ranTraa], repTX, boxPosY[0] + lSpacing, );
@@ -141,7 +170,7 @@ function draw () {
   //first reply
 
   if (prNo > 0) {
-    fill(20, 100, 200);
+    fill(userBkgr);
     noStroke();
     rect(ansX, boxPosY[1], boxWidth, boxHeight, 10);
     fill(255);
@@ -155,7 +184,7 @@ function draw () {
     else {
       replying = false;
       if (!played && prNo == 1) playPop();
-      fill(214);
+      fill(botBkgr);
       noStroke();
       let enq = "Mish " + enmyn[rEn] + ". Cre'n ennym t'ort?";
       if (textWidth(enq) + 5 < txtWidth) {
@@ -166,7 +195,8 @@ function draw () {
         rect(repX, boxPosY[2], boxWidth, boxHeight2, 10);
         height1 = false;
       }
-      fill(0);
+      image(profile[rEn], repX - profPicSpX, boxPosY[2] + profPicSpY);
+      fill(255);
       textSize(16);
       textAlign(LEFT);
       text(enq, repTX, boxPosY[2] + lSpacing, txtWidth);
@@ -177,9 +207,9 @@ function draw () {
 
   if (prNo > 1) {
     height1 = true;
-    fill(20, 100, 200);
+    fill(userBkgr);
     noStroke();
-    rect(ansX, boxPosY[3], 281, 49, 10);
+    rect(ansX, boxPosY[3], boxWidth, boxHeight, 10);
     fill(255);
     textSize(16);
     textAlign(LEFT);
@@ -192,10 +222,11 @@ function draw () {
       replying = false;
       if (!played && prNo == 2) playPop();
       height1 = false;
-      fill(214);
+      fill(botBkgr);
       noStroke();
       rect(repX, boxPosY[4], boxWidth, boxHeight2, 10);
-      fill(0);
+      image(profile[rEn], repX - profPicSpX, boxPosY[4] + profPicSpY);
+      fill(255);
       textSize(16);
       textAlign(LEFT);
       text("T’eh mie çheet dty whail, " + nynEnnym + ". Kys t’ou?", repTX, boxPosY[4] + lSpacing, txtWidth);
@@ -205,7 +236,7 @@ function draw () {
   //third reply
 
   if (prNo > 2) {
-    fill(20, 100, 200);
+    fill(userBkgr);
     noStroke();
     rect(ansX, boxPosY[5], boxWidth, boxHeight2, 10);
     fill(255);
@@ -219,10 +250,11 @@ function draw () {
     else {
     replying = false;
     if (!played && prNo == 3) playPop();
-    fill(214);
+    fill(botBkgr);
     noStroke();
     rect(repX, boxPosY[6], boxWidth, boxHeight2, 10);
-    fill(0);
+    image(profile[rEn], repX - profPicSpX, boxPosY[6] + profPicSpY);
+    fill(255);
     textSize(16);
     textAlign(LEFT);
     text("Ta mee braew, gura mie ayd. Cre ass t’ou, " + nynEnnym + "?", repTX, boxPosY[6] + lSpacing, txtWidth);
@@ -232,7 +264,7 @@ function draw () {
   //fourth reply
 
   if (prNo > 3) {
-    fill(20, 100, 200);
+    fill(userBkgr);
     noStroke();
     if (textWidth(replies[3]) < txtWidth) {
       rect(ansX, boxPosY[7], boxWidth, boxHeight, 10);
@@ -253,10 +285,11 @@ function draw () {
     else {
       replying = false;
       if (!played && prNo == 4) playPop();
-      fill(214);
+      fill(botBkgr);
       noStroke();
       rect(repX, boxPosY[8], boxWidth, boxHeight, 10);
-      fill(0);
+      image(profile[rEn], repX - profPicSpX, boxPosY[8] + profPicSpY);
+      fill(255);
       textSize(16);
       textAlign(LEFT);
       text("Ta mee ass " + buill[rBu] + ".", repTX, boxPosY[8] + lSpacing);
@@ -301,6 +334,8 @@ function draw () {
     textAlign(CENTER);
     text(prompt[prNo], width/2, height-17.5);
   }
+
+  if (replying) typing();
 }
 
 function messaged () {
@@ -316,7 +351,6 @@ function firstMessage () {
     replies.push(inp1.value());
     prNo++;
     inp1.value("");
-    rEn = Math.floor(random(0, 10));
     boxPos();
   }
   else {
@@ -416,6 +450,14 @@ function boxPos () {
     else boxPosY[i] = boxPosY[i] - boxHeight2 - spacing;
   }
   boxPosY.push(boxPosYSt);
+}
+
+function typing () {
+  textAlign(LEFT);
+  fill(0);
+  let typeTxt = enmyn[rEn] + " is typing ";
+  text(typeTxt + dots[Math.floor(dotCount)], width/2 - textWidth(typeTxt)/2, height - 125);
+  dotCount < dots.length - 0.01 ? dotCount = dotCount + 0.05 : dotCount = 0;
 }
 
 function gameEnd () {
