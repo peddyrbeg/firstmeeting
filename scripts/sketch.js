@@ -67,10 +67,10 @@ function setup () {
   boxHeight = 50;
   boxHeight2 = 73;
   txtWidth = 211;
-  repX = displayWidth/2.6125;
-  repTX = displayWidth/2.5;
-  ansX = displayWidth/2.125;
-  ansTX = displayWidth/2.05;
+  repX = 735;
+  repTX = 768;
+  ansX = 867;
+  ansTX = 902;
 
   boxPosY[0] = 50;
   startPos = displayHeight * 0.046;
@@ -91,7 +91,7 @@ function setup () {
   prompt = ["Say '" + traa[ranTraa] + "' back in Manx.", "Say who you are in Manx.", "Say, '" + stayd[ranProm] + " How are you yourself?' in Manx.", "Say where you're from, and ask where they're from."];
 
   inp1  = createInput();
-  inp1.size(displayWidth/4, displayHeight*0.035);
+  inp1.size(480, 37.8);
   inp1.position(width/2-inp1.width/2, height-height*0.093);
   inp1.style("font-size", "20px");
 
@@ -119,13 +119,13 @@ function draw () {
   rect(repX, boxPosY[0], boxWidth, boxHeight, 10);
   boxPosY[1] = boxPosY[0] + boxHeight + spacing;
   fill(0);
-  textSize(displayWidth*0.009);
+  textSize(17);
   textAlign(LEFT, CENTER);
   text(greet[ranTraa], repTX, boxPosY[0] + lSpacing, );
 
   if (!correct && !error && !replying) {
     textAlign(CENTER);
-    text(prompt[prNo], displayWidth/2, displayHeight-displayHeight*0.17);
+    text(prompt[prNo], width/2, height-17.5);
   }
 
   //first reply
