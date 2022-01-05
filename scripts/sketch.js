@@ -101,7 +101,7 @@ function setup () {
   ansX = width/2-80;
   ansTX = ansX + 25;
 
-  boxPosYSt = height-200;
+  boxPosYSt = height-225;
   boxPosY[0] = boxPosYSt;
   spacing = 21.6;
   spacing2 = boxHeight2 + 6.5;
