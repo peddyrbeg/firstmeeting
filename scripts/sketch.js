@@ -123,7 +123,7 @@ function setup () {
   prompt = ["Say '" + traa[ranTraa] + "' back in Manx.", "Say who you are in Manx.", "Say, '" + stayd[ranProm] + " How are you yourself?' in Manx.", "Say where you're from, and ask where they're from."];
 
   inp1  = createInput();
-  inp1.size(340, 37.8);
+  inp1.size(300, 37.8);
   inp1.position(width/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
   inp1.style("border-radius", "10px");
