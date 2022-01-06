@@ -72,6 +72,10 @@ var boxHeight2;
 var height1 = true; //switch between two heights
 var txtWidth;
 
+var rW; //score tally anim start value
+var rY;
+var rTime = 0;
+
 var popSound;
 var played = false;
 
@@ -184,6 +188,7 @@ function draw () {
   bottomAppBar(userBkgr);
   correctMsg();
   tryAgain();
+  scoreTally();
 
   if (!correct && !error && !replying) {
     fill(255);
@@ -496,6 +501,52 @@ function typing () {
     text(typeTxt + dots[Math.floor(dotCount)], width/2 - textWidth(typeTxt)/2, height - 130);
     dotCount < dots.length - 0.01 ? dotCount = dotCount + 0.05 : dotCount = 0;
   }
+}
+
+function scoreTally () {
+  rectMode(CENTER);
+  if (!correct && prNo != 4) {
+    fill(0);
+    rTime = 0;
+    rW = 40;
+    rY = 30;
+  }
+  else if (correct && prNo != 4) {
+    fill(12, 121, 76);
+    rTime++;
+    if (rTime < 2) {
+      rW = rW + 4;
+      rY = rY + 4;
+    }
+    else if (rTime >= 2 && rTime < 5) {
+      rW = rW + 2;
+      rY = rY + 2;
+    }
+  }
+  else {
+    fill(12, 121, 76);
+    noStroke();
+    rTime++;
+    if (rTime < 2) {
+      rW = rW + 4;
+      rY = rY + 4;
+    }
+    else if (rTime >= 2 && rTime < 5) {
+      rW = rW + 2;
+      rY = rY + 2;
+    }
+    else {
+      rW = 40;
+      rY = 30;
+    }
+  }
+  rect(width-30, 22.5, rW, rY, 10);
+
+  textAlign(CENTER);
+  if (!correct) fill(255);
+  else fill(255);
+  
+  text(prNo + "/4", width-30, 20);
 }
 
 function gameEnd () {
