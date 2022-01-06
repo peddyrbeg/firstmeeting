@@ -3,9 +3,12 @@ var botBkgr;
 var userBkgr;
 var dots = ["", ".", "..", "..."];
 var dotCount = 0;
+var t = 0; //time measure for typing 'snackbar'
 
 var profPicSpX;
 var profPicSpY;
+
+var aBeeZee;
 
 var inp1;
 var retry;
@@ -38,7 +41,8 @@ var ans3a;
 var ans3b = /kys t/i
 var ans3c = /ou hene/i;
 var ans4a = /ta mee ass/i;
-var ans4b = /cre ass t'ou/i;
+var ans4b = /cre ass t/i
+var ans4c = /ou/i;
 
 var r1T = 0;
 var r1Tt = 150;
@@ -71,6 +75,12 @@ var txtWidth;
 var popSound;
 var played = false;
 
+var blip;
+var blipPlayed = false;
+
+var wrong;
+var wrongPlayed = false;
+
 function preload () {
   profile[0] = loadImage('assets/aalish.png');
   profile[2] = loadImage('assets/blay.png');
@@ -84,10 +94,18 @@ function preload () {
   profile[9] = loadImage('assets/catreeney.png');
 
   popSound = loadSound('assets/414383__bluesiren__plop-sound.mp3');
+  blip = loadSound('assets/blip.mp3');
+  wrong = loadSound('assets/error.mp3');
+  
+  aBeeZee = loadFont('assets/ABeeZee-Regular.ttf');
 }
 
 function setup () {
-  createCanvas(displayWidth, displayHeight-163);
+  var cnv = createCanvas(320, displayHeight-163);
+  var x = (displayWidth - width) / 2;
+  cnv.position(x);
+
+  textFont(aBeeZee);
 
   rEn = Math.floor(random(0, 10));
   botBkgr = color(230, 102, 13);
@@ -97,17 +115,17 @@ function setup () {
   boxHeight = 50;
   boxHeight2 = 73;
   txtWidth = 211;
-  repX = width/2 - 120;
+  repX = width/2 - 115;
   repTX = repX + 20;
-  ansX = width/2-80;
+  ansX = width/2-90;
   ansTX = ansX + 25;
 
   boxPosYSt = height-225;
   boxPosY[0] = boxPosYSt;
   spacing = 21.6;
   spacing2 = boxHeight2 + 6.5;
-  lSpacing = 27;
-  profPicSpX = 50;
+  lSpacing = 23;
+  profPicSpX = 45;
   profPicSpY = 7.5;
 
   let ranProm = Math.floor(random(0, 3));
@@ -122,29 +140,31 @@ function setup () {
 
   prompt = ["Say '" + traa[ranTraa] + "' back in Manx.", "Say who you are in Manx.", "Say, '" + stayd[ranProm] + " How are you yourself?' in Manx.", "Say where you're from, and ask where they're from."];
 
-  inp1  = createInput();
+  inp1 = createInput();
   inp1.size(300, 37.8);
-  inp1.position(width/2-inp1.width/2, height-100);
+  inp1.style("justify-content", "center");
+  inp1.position(displayWidth/2-inp1.width/2, height-100);
   inp1.style("font-size", "20px");
   inp1.style("border-radius", "10px");
 
   retry = createButton("RETRY");
-  retry.position(width/2-100, height-100);
+  retry.position(displayWidth/2-110, height-75);
   retry.size(100, 50);
   retry.style("background", "black");
   retry.style("border", "transparent");
   retry.style("color", "white");
   retry.style("display", "none");
+  retry.style("border-radius", "10px");
   retry.mousePressed(gameRestart)
 
   next = createButton("NEXT");
-  next.position(width/2, height-100);
+  next.position(displayWidth/2+10, height-75);
   next.size(100, 50);
-  next.style("background", "green");
+  next.style("background", "white");
   next.style("border", "transparent");
-  next.style("color", "white");
+  next.style("color", "black");
   next.style("display", "none");
-
+  next.style("border-radius", "10px");
 }
 
 function keyPressed () {
@@ -156,8 +176,27 @@ function keyPressed () {
 function draw () {
   background(255);
 
-  //initial greeting
+  initialGreeting();
+  firstReply();
+  secondReply();
+  thirdReply();
+  fourthReply();
+  bottomAppBar(userBkgr);
+  correctMsg();
+  tryAgain();
 
+  if (!correct && !error && !replying) {
+    fill(255);
+    textAlign(CENTER);
+    rectMode(CENTER);
+    text(prompt[prNo], width/2, height-40, 300);
+  }
+
+  if (replying) typing();
+  else t = 0;
+}
+
+function initialGreeting () {
   fill(botBkgr);
   noStroke();
   rectMode(CORNER);
@@ -168,11 +207,11 @@ function draw () {
   fill(255);
   textSize(17);
   textAlign(LEFT, CENTER);
-  text(greet[ranTraa], repTX, boxPosY[0] + lSpacing, );
+  text(greet[ranTraa], repTX, boxPosY[0] + lSpacing);
+}
 
-  //first reply
-
-  if (prNo > 0) {
+function firstReply () {
+    if (prNo > 0) {
     fill(userBkgr);
     noStroke();
     rect(ansX, boxPosY[1], boxWidth, boxHeight, 10);
@@ -205,10 +244,10 @@ function draw () {
       text(enq, repTX, boxPosY[2] + lSpacing, txtWidth);
     }
   }
+}
 
-  //second reply
-
-  if (prNo > 1) {
+function secondReply () {
+    if (prNo > 1) {
     height1 = true;
     fill(userBkgr);
     noStroke();
@@ -235,9 +274,9 @@ function draw () {
       text("T’eh mie çheet dty whail, " + nynEnnym + ". Kys t’ou?", repTX, boxPosY[4] + lSpacing, txtWidth);
     }
   }
+}
 
-  //third reply
-
+function thirdReply () {
   if (prNo > 2) {
     fill(userBkgr);
     noStroke();
@@ -251,21 +290,21 @@ function draw () {
       replying = true;
     }
     else {
-    replying = false;
-    if (!played && prNo == 3) playPop();
-    fill(botBkgr);
-    noStroke();
-    rect(repX, boxPosY[6], boxWidth, boxHeight2, 10);
-    image(profile[rEn], repX - profPicSpX, boxPosY[6] + profPicSpY);
-    fill(255);
-    textSize(16);
-    textAlign(LEFT);
-    text("Ta mee braew, gura mie ayd. Cre ass t’ou, " + nynEnnym + "?", repTX, boxPosY[6] + lSpacing, txtWidth);
+      replying = false;
+      if (!played && prNo == 3) playPop();
+      fill(botBkgr);
+      noStroke();
+      rect(repX, boxPosY[6], boxWidth, boxHeight2, 10);
+      image(profile[rEn], repX - profPicSpX, boxPosY[6] + profPicSpY);
+      fill(255);
+      textSize(16);
+      textAlign(LEFT);
+      text("Ta mee braew, gura mie ayd. Cre ass t’ou, " + nynEnnym + "?", repTX, boxPosY[6] + lSpacing, txtWidth);
     }
   }
+}
 
-  //fourth reply
-
+function fourthReply () {
   if (prNo > 3) {
     fill(userBkgr);
     noStroke();
@@ -299,47 +338,43 @@ function draw () {
       gameEnd();
     }
   }
+}
 
-  //input/prompt bar background
-
-  fill(255);
-  rect(0, height-110, width, 110);
-
-  //correct message
-
+function correctMsg () {
   if (correct) {
-    fill(0, 150, 0);
+    if (!blipPlayed) {
+      blip.play();
+      blipPlayed = true;
+    }
+    fill(12, 121, 76);
     textAlign(CENTER);
-    text("Well done!", width/2, height-17.5);
+    text("Well done!", width/2, height-130);
     correctCount++;
     if (correctCount == 50) {
       correct = false;
+      blipPlayed = false;
       correctCount = 0;
       mNo++;
     }
   }
+}
 
-  //try again message
-
+function tryAgain () {
   if (error) {
+    if (!wrongPlayed) {
+      wrong.play();
+      wrongPlayed = true;
+    }
     fill(255, 0, 0);
     textAlign(CENTER);
-    text("Try again!", width/2, height-10);
+    text("Try again!", width/2, height-130);
     errorCount++;
     if (errorCount == 50) {
       error = false;
+      wrongPlayed = false;
       errorCount = 0;
     }
   }
-
-  if (!correct && !error && !replying) {
-    fill(0);
-    textAlign(CENTER);
-    rectMode(CENTER);
-    text(prompt[prNo], width/2, height-30, 300);
-  }
-
-  if (replying) typing();
 }
 
 function messaged () {
@@ -351,11 +386,7 @@ function messaged () {
 
 function firstMessage () {
   if (ans1.test(inp1.value())) {
-    correct = true;
-    replies.push(inp1.value());
-    prNo++;
-    inp1.value("");
-    boxPos();
+    rightAns();
   }
   else {
     error = true;
@@ -401,12 +432,8 @@ function secondMessage () {
     else if (nynEnnym.search(t) == 0 && nynEnnym.search(th) == -1) nynEnnym = nynEnnym.replace(t, "H");
     else if (nynEnnym.search(th) == 0) nynEnnym = nynEnnym.replace(th, "H");
     else nynEnnym = nynEnnym.charAt(0).toUpperCase() + nynEnnym.slice(1);
-    correct = true;
-    replies.push(inp1.value());
-    prNo++;
-    played = false;
-    inp1.value("");
-    boxPos();
+    
+    rightAns();
   }
   else {
     error = true;
@@ -415,12 +442,7 @@ function secondMessage () {
 
 function thirdMessage () {
   if (ans3a.test(inp1.value()) && ans3b.test(inp1.value()) && ans3c.test(inp1.value())) {
-    correct = true;
-    replies.push(inp1.value());
-    prNo++;
-    played = false;
-    inp1.value("");
-    boxPos();
+    rightAns();
   }
   else {
     error = true;
@@ -428,18 +450,27 @@ function thirdMessage () {
 }
 
 function fourthMessage () {
-  if (ans4a.test(inp1.value()) && ans4b.test(inp1.value())) {
-    correct = true;
-    replies.push(inp1.value());
-    prNo++;
-    played = false;
-    inp1.value("");
+  if (ans4a.test(inp1.value()) && ans4b.test(inp1.value()) && ans4c.test(inp1.value())) {
+    rightAns();
     rBu = Math.floor(random(0, 7));
-    boxPos();
   }
   else {
     error = true;
   }
+}
+
+function rightAns () {
+  correct = true;
+  replies.push(inp1.value());
+  prNo++;
+  played = false;
+  inp1.value("");
+  boxPos();
+}
+
+function bottomAppBar (c) {
+  fill(c);
+  rect(0, height-110, width, 110);
 }
 
 function playPop () {
@@ -457,17 +488,24 @@ function boxPos () {
 }
 
 function typing () {
-  textAlign(LEFT);
-  fill(0);
-  let typeTxt = enmyn[rEn] + " is typing ";
-  text(typeTxt + dots[Math.floor(dotCount)], width/2 - textWidth(typeTxt)/2, height - 125);
-  dotCount < dots.length - 0.01 ? dotCount = dotCount + 0.05 : dotCount = 0;
+  if (t < 50) t++;
+  else {
+    textAlign(LEFT);
+    fill(0);
+    let typeTxt = enmyn[rEn] + " is typing ";
+    text(typeTxt + dots[Math.floor(dotCount)], width/2 - textWidth(typeTxt)/2, height - 130);
+    dotCount < dots.length - 0.01 ? dotCount = dotCount + 0.05 : dotCount = 0;
+  }
 }
 
 function gameEnd () {
   inp1.style("display", "none");
   retry.style("display", "block");
   next.style("display", "block");
+
+  fill(12, 121, 76);
+  textAlign(CENTER);
+  text("Great job, " + nynEnnym + "!", width/2, height-130);
 }
 
 function gameRestart () {
