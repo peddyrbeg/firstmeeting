@@ -191,7 +191,7 @@ function draw () {
   scoreTally();
 
   if (!correct && !error && !replying) {
-    fill(255);
+    fill(0);
     textAlign(CENTER);
     rectMode(CENTER);
     text(prompt[prNo], width/2, height-40, 300);
@@ -474,7 +474,7 @@ function rightAns () {
 }
 
 function bottomAppBar (c) {
-  fill(c);
+  fill(255);
   rect(0, height-110, width, 110);
 }
 
